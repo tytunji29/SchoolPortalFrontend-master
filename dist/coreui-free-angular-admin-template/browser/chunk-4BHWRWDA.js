@@ -1,0 +1,1 @@
+import{la as n}from"./chunk-DRLFSV2D.js";var f=(()=>{let r=class r{transform(e,t){return e?t?(t=t.toLowerCase(),e.filter(o=>o.name.toLowerCase().includes(t))):e:[]}};r.\u0275fac=function(t){return new(t||r)},r.\u0275pipe=n({name:"search",type:r,pure:!0});let i=r;return i})();export{f as a};
