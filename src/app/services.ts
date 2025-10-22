@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 
 export class ApiService {
-  private readonly baseUrl = 'http://localhost:5100/api'; // Base API URL
+  private readonly baseUrl = 'https://schoolportal-master.onrender.com/api'; // Base API URL
 
   constructor(private http: HttpClient) {}
 
