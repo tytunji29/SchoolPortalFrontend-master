@@ -1,0 +1,251 @@
+<c-row>
+  <c-col xs="12">
+    <c-card class="mb-4">
+      <c-card-header class="d-flex justify-content-between align-items-center">
+        <strong>List Of Staffs</strong>
+        <!-- Add some margin to the button -->
+        <button class="btn btn-primary ml-auto" (click)="openModal()">
+          Add
+        </button>
+      </c-card-header>
+      <c-card-body>
+        <input
+          type="text"
+          [(ngModel)]="searchText"
+          placeholder="Search staff"
+          class="form-control mb-3"
+        />
+        <table class="table table-striped" cTable>
+          <thead>
+            <tr>
+              <th scope="col">SN</th>
+              <th scope="col">Name</th>
+              <th scope="col">Address</th>
+              <th scope="col">Email</th>
+              <th scope="col">Phone Number</th>
+              <th scope="col">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              *ngFor="
+                let con of conList
+                  | search : searchText
+                  | paginate : { itemsPerPage: 4, currentPage: p };
+                let i = index
+              "
+            >
+              <th scope="row">{{ i + 1 }}</th>
+              <td>{{ con.name }}</td>
+              <td>{{ con.address }}</td>
+              <td>{{ con.email }}</td>
+              <td>{{ con.mobileNumber }}</td>
+              <td>
+                <button class="btn btn-sm btn-info" (click)="viewCountry(con)">
+                  <i class="fa fa-eyes">view</i>
+                </button>
+
+                <button
+                  class="btn btn-sm btn-warning"
+                  (click)="editCountry(con)"
+                >
+                  <i class="fa fa-pencil">edit</i>
+                </button>
+                <button
+                  class="btn btn-sm btn-danger"
+                  (click)="deleteCountry(con)"
+                >
+                  <i class="fa fa-times">delete</i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <pagination-controls (pageChange)="p = $event"></pagination-controls>
+      </c-card-body>
+    </c-card>
+  </c-col>
+</c-row>
+
+<!-- Correct Modal Usage -->
+<c-modal
+  [visible]="isModalVisible"
+  (visibleChange)="isModalVisible = $event"
+  backdrop="static"
+>
+  <c-modal-header>
+    <h5 cModalTitle>{{ isEditMode ? "Edit Staff" : "Add Staff" }}</h5>
+    <button cButtonClose (click)="closeModal()"></button>
+  </c-modal-header>
+  <c-modal-body>
+    <!-- Form inputs for adding/editing country -->
+
+    <form (ngSubmit)="isEditMode ? updateCountry() : saveCountry()">
+      <div class="container">
+        <form>
+          <div class="row">
+            <!-- School Name -->
+            <div class="form-group col-md-6">
+              <label for="countryName">Staff Name</label>
+              <input
+                type="text"
+                class="form-control"
+                id="countryName"
+                placeholder="Staff Name"
+                [(ngModel)]="currentCountry.name"
+                name="name"
+                required
+              />
+            </div>
+
+            <!-- School Address -->
+            <div class="form-group col-md-6">
+              <label for="countryAddress">Staff Address</label>
+              <input
+                type="text"
+                class="form-control"
+                id="countryAddress"
+                placeholder="Staff Address"
+                [(ngModel)]="currentCountry.address"
+                name="address"
+                required
+              />
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="form-group col-md-6">
+              <label for="countryLogo">Profile Picture</label>
+
+              <input
+                type="file"
+                class="form-control"
+                id="displayPicture"
+                (change)="onFileChange($event)"
+                required
+              />
+            </div>
+
+            <!-- School Theme Colour -->
+            <div class="form-group col-md-6">
+              <label for="countryEmail">Staff Email</label>
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Staff Email"
+                id="countryEmail"
+                [(ngModel)]="currentCountry.email"
+                name="email"
+                required
+              />
+            </div>
+          </div>
+
+          <div class="row">
+            <!-- School Subscription Type -->
+            <div class="form-group col-md-6">
+              <label for="countrySubscriptionType">Gender</label>
+              <select
+                class="form-control"
+                id="gender"
+                [(ngModel)]="currentCountry.gender"
+                name="gender"
+                required
+              >
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+              </select>
+            </div>
+            <div class="form-group col-md-6">
+              <label for="dob">Date of Birth</label>
+              <input
+                type="date"
+                class="form-control"
+                id="dob"
+                [(ngModel)]="currentCountry.dob"
+                name="dob"
+                required
+              />
+            </div>
+            <!-- School Subscription Type Fee -->
+          </div>
+
+          <div class="row">
+            <!-- School Website -->
+            <div class="form-group col-md-6">
+              <label for="countryWebsite">Phone Number</label>
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Phone Number"
+                id="mobileNumber"
+                [(ngModel)]="currentCountry.mobileNumber"
+                name="mobileNumber"
+                required
+              />
+            </div>
+            <div class="form-group col-md-6">
+              <label for="countryPinKey">StaffType</label>
+              <select
+                class="form-control"
+                id="stafftype"
+                [(ngModel)]="currentCountry.staffType"
+                name="stafftype"
+                required
+              >
+                <option value="Head Master">Head Master</option>
+                <option value="Teacher">Teacher</option>
+                <option value="Assistant Teacher">Assistant Teacher</option>
+                <option value="Libarian">Libarian</option>
+                <option value="Others">Others</option>
+              </select>
+            </div>
+          </div>
+          <div class="row">
+            <!-- Mobile Number -->
+            <div class="form-group col-md-6">
+              <label for="countryMobileNumber">Tribe</label>
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Tribe"
+                id="countryTribe"
+                [(ngModel)]="currentCountry.tribe"
+                name="Tribe"
+                required
+              />
+            </div>
+
+            <!-- Pin Key -->
+            <div class="form-group col-md-6">
+              <label for="countryPinKey">Religion</label>
+              <select
+                class="form-control"
+                id="religion"
+                [(ngModel)]="currentCountry.religion"
+                name="religion"
+                required
+              >
+                <option value="Christainity">Christainity</option>
+                <option value="Islam">Islam</option>
+                <option value="Traditional">Traditional</option>
+                <option value="Others">Others</option>
+              </select>
+              <!-- <input type="text" class="form-control" placeholder="Religion" id="countryPinKey" [(ngModel)]="currentCountry.religion" name="pinKey" required> -->
+            </div>
+          </div>
+        </form>
+      </div>
+    </form>
+  </c-modal-body>
+  <c-modal-footer>
+    <button cButton color="secondary" (click)="closeModal()">Close</button>
+    <button
+      cButton
+      color="primary"
+      (click)="isEditMode ? updateCountry() : onSubmit()"
+    >
+      {{ isEditMode ? "Update" : "Save" }}
+    </button>
+  </c-modal-footer>
+</c-modal>

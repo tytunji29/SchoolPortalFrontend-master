@@ -1,0 +1,47 @@
+.table {
+    th, td {
+      text-align: center;
+    }
+  }
+  .table-striped tbody tr:nth-of-type(odd) {
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+
+  .btn-sm .fa {
+    font-size: 1.2em; // Increase font size for icons in small buttons
+  }
+  
+  .c-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .c-card-header button {
+    margin-left: auto; // Ensure button stays on the right
+  }
+
+  .icon-large {
+    font-size: 1.5em; // Increase icon size
+    vertical-align: middle; // Align icons vertically in the middle
+  }
+  /* Add some padding and increase the size of the icons */
+/* Increase the button size */
+/* Add some padding and increase the size of the icons */
+.btn-sm {
+  padding: 0.5rem;  /* Adjust padding to make buttons bigger */
+  border-radius: 0.25rem; /* Optional: Round the button corners */
+  font-size: 0.8rem; /* Make text larger inside the buttons */
+}
+
+/* Specifically target the icons to increase their size */
+.btn-sm i {
+  font-size: 1.5rem; /* Increase the size of the icons */
+}
+
+
+  .btn-sm .fa {
+    font-size: inherit; // Ensure the button's font size is set to inherit to respect parent element sizes
+  }
+  
+  

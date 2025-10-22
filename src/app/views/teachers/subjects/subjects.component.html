@@ -1,0 +1,136 @@
+<c-row>
+  <c-col xs="12">
+    <c-card class="mb-4">
+      <c-card-header class="d-flex justify-content-between align-items-center">
+        <strong>Subjects List</strong>
+        <!-- Add some margin to the button -->
+        <button *ngIf="canSeeAddButton" class="btn btn-primary ml-auto" (click)="openModal()">Add</button>
+      </c-card-header>
+      <c-card-body *ngIf="canSeeAddButton">
+        <input
+          type="text"
+          [(ngModel)]="searchText"
+          placeholder="Search subject"
+          class="form-control mb-3"
+        />
+        <table class="table table-striped" cTable>
+          <thead>
+            <tr>
+              <th scope="col">SN</th>
+              <th scope="col">Subject Name</th>
+              <th scope="col">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              *ngFor="let con of conList | search: searchText | paginate: { itemsPerPage: 4, currentPage: p }; let i = index"
+            >
+              <th scope="row">{{ i + 1 }}</th>
+              <td>{{ con.name }}</td>
+              <td>
+                <button class="btn btn-sm btn-info" (click)="viewCountry(con)">
+                  <i class="fa fa-eye">view</i>
+                </button>
+                <button class="btn btn-sm btn-warning" (click)="editCountry(con)">
+                  <i class="fa fa-pencil">edit</i>
+                </button>
+                <button class="btn btn-sm btn-danger" (click)="deleteCountry(con)">
+                  <i class="fa fa-times">delete</i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <pagination-controls (pageChange)="p = $event"></pagination-controls>
+      </c-card-body>
+      <c-card-body *ngIf="!canSeeAddButton">
+        <input
+          type="text"
+          [(ngModel)]="searchText"
+          placeholder="Search subject"
+          class="form-control mb-3"
+        />
+        <table class="table table-striped" cTable>
+          <thead>
+            <tr>
+              <th scope="col">SN</th>
+              <th scope="col">Subject Name</th>
+              <th scope="col">Class Name</th>
+              <th scope="col">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              *ngFor="let con of conList | search: searchText | paginate: { itemsPerPage: 4, currentPage: p }; let i = index"
+            >
+              <th scope="row">{{ i + 1 }}</th>
+              <td>{{ con.subject }}</td>
+              <td>{{ con.className }}</td>
+              <td>
+                <button class="btn btn-sm btn-info" (click)="generateMyTimetable(con)">
+                  <i class="fa fa-eye">Schedule My Timetable</i>
+                </button>
+                <!-- <button class="btn btn-sm btn-warning" (click)="editCountry(con)">
+                  <i class="fa fa-pencil">edit</i>
+                </button>
+                <button class="btn btn-sm btn-danger" (click)="deleteCountry(con)">
+                  <i class="fa fa-times">delete</i>
+                </button> -->
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <pagination-controls (pageChange)="p = $event"></pagination-controls>
+      </c-card-body>
+    </c-card>
+  </c-col>
+</c-row>
+
+<!-- Add this modal inside your main component HTML -->
+
+<!-- Timetable Modal for Scheduling -->
+<c-modal [visible]="isTimetableModalVisible" (visibleChange)="isTimetableModalVisible = $event" backdrop="static">
+  <c-modal-header>
+    <h5 cModalTitle>Schedule Timetable</h5>
+    <button cButtonClose (click)="closeTimetableModal()"></button>
+  </c-modal-header>
+  <c-modal-body>
+    <!-- Timetable Form -->
+    <form (ngSubmit)="saveTimetable()">
+      <div class="form-group" *ngFor="let day of weekdays">
+        <label>{{ day }}</label>
+        <div class="d-flex align-items-center">
+          <!-- Time picker for start time -->
+          <input type="time" class="form-control mr-2" [(ngModel)]="timetable[day].startTime" name="{{ day }}StartTime" required />
+          <!-- Time picker for end time -->
+          <input type="time" class="form-control" [(ngModel)]="timetable[day].endTime" name="{{ day }}EndTime" required />
+        </div>
+      </div>
+    </form>
+  </c-modal-body>
+  <c-modal-footer>
+    <button cButton color="secondary" (click)="closeTimetableModal()">Close</button>
+    <button cButton color="primary" (click)="saveTimetable()">Save</button>
+  </c-modal-footer>
+</c-modal>
+
+<!-- Modal for adding/editing subjects -->
+<c-modal [visible]="isModalVisible" (visibleChange)="isModalVisible = $event" backdrop="static">
+  <c-modal-header>
+    <h5 cModalTitle>{{ isEditMode ? 'Edit Subject' : 'Add Subject' }}</h5>
+    <button cButtonClose (click)="closeModal()"></button>
+  </c-modal-header>
+  <c-modal-body>
+    <!-- Form inputs for adding/editing subject -->
+    <form (ngSubmit)="isEditMode ? updateCountry() : saveCountry()">
+      <div class="form-group">
+        <label for="countryName">Subject</label>
+        <input type="text" class="form-control" id="countryName" [(ngModel)]="currentCountry.name" name="name" required>
+      </div>
+    </form>
+  </c-modal-body>
+  <c-modal-footer>
+    <button cButton color="secondary" (click)="closeModal()">Close</button>
+    <button cButton color="primary" (click)="isEditMode ? updateCountry() : saveCountry()">{{ isEditMode ? 'Update' : 'Save' }}</button>
+  </c-modal-footer>
+</c-modal>

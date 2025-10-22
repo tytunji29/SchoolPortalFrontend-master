@@ -1,0 +1,52 @@
+<c-row>
+  <c-col xs="12">
+    <c-card class="mb-4">
+      <c-card-header class="d-flex justify-content-between align-items-center">
+        <strong>Map Subject To Teachers</strong>
+      </c-card-header>
+      <c-card-body>
+          <form cForm (ngSubmit)="onSubmit()">
+            <c-row>
+            <div class="form-group">
+              <label for="classLevel">Class</label>
+              <select class="form-control" id="classLevel"  [(ngModel)]="currentCountry.class" name="classLevel" required>
+                <option *ngFor="let level of classLevels" [value]="level.id">{{ level.name }}</option>
+                <!-- <option *ngFor="let level of classLevels" [value]="level.name">{{ level.name }}</option> -->
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="classLevel">Class Head Teacher</label>
+              <select class="form-control" id="classTeacher"  [(ngModel)]="currentCountry.classTeacher" name="classTeacher" required>
+                <option *ngFor="let lev of classTeachers" [value]="lev.id">{{ lev.name }}</option>
+                <!-- <option *ngFor="let level of classLevels" [value]="level.name">{{ level.name }}</option> -->
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="classLevel">Class Subjects</label>
+              <select class="form-control" id="classsubject"  [(ngModel)]="currentCountry.subject" name="classsubject" required>
+                <option *ngFor="let lev of classSubject" [value]="lev.id">{{ lev.name }}</option>
+                <!-- <option *ngFor="let level of classLevels" [value]="level.name">{{ level.name }}</option> -->
+              </select>
+            </div>
+          </c-row>
+
+          
+            <c-row>
+              <c-col xs="6">
+                <button cButton class="px-4" color="success" type="submit">
+                  Map Subject To Teacher
+                </button>
+              </c-col>
+              <!-- <c-col class="text-right" xs="6">
+                <button cButton class="px-0" color="link" type="button" routerLink="/register">
+                  Forgot password?
+                </button>
+              </c-col> -->
+            </c-row>
+          </form>
+        </c-card-body>
+
+</c-card>
+</c-col>
+</c-row>
